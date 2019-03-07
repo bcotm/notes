@@ -23,6 +23,9 @@ public class Apple {
 }
 // AppleTest.java
 import com.tencent.app.Apple;
+// 导入Math下的静态方法和静态变量，就可以直接使用pow(1,2)，而不是Math.pow(1,2)
+import static java.lang.Math.*;
+
 public class AppleTest {
     public static void main(String[] args) {
         Apple apple = new Apple();
