@@ -123,6 +123,60 @@ Detail descriptions.
 - show
 - reset
 - ls-tree
+- cat-file -t SHA-1
 
 https://github.com/pysnow530/git-from-the-inside-out
-https://github.com/pysnow530/git-from-the-inside-out
+https://blog.csdn.net/yuzaipiaofei/article/details/6639866
+
+# Difference between **revert**, **reset**, **checkout**
+## tree-ish commit-ish
+git可以在需要tree对象的时候给它一个commit或者tag对象，这时就使用commit或者tag所指向的tree对象。
+可以从tree-ish参数(commit, tag, tree)得到一个tree对象。
+可以从commit-ish参数(tag, commit)得到一个commit对象。
+commit-ish^n:commit的第n个直接父节点，比如合并时可以有2个父节点。
+commit-ish~n: == commit-ish^^^^..
+
+git log ^HEAD~2 HEAD
+从HEAD能达到的commit集合中排出从HEAD2能达到的。
+比如查看从master分出来的test分支修改的内容
+git log ^master test
+
+## ref
+ref是一个名字，包含了一个commit。比如tag, branch_name
+指代tree中某个文件：tree-ish:path/to/file
+
+## revert
+This command creates a new **commit** that undoes the changes from a previous **commit**. This command adds new history to the project (it doesn't modify existing history).
+
+## reset
+Reset current **HEAD** to the specified state.可能会导致detached状态，因为会把branch移动到HEAD指向的地方。
+### commit-ish
+如果是commit结尾或无结尾(默认HEAD)，把当前HEAD指向commit，然后可以选的修改index和working directory。
+
+|working|index|HEAD|target|argument|working|index|HEAD|
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|A|B|C|D|--soft|A|B|D|
+|||||--mixed|A|D|D|
+|||||--hard|D|D|D|
+|||||--merge|disallowed|||
+
+|working|index|HEAD|target|argument|working|index|HEAD|
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|A|B|C|C|--soft|A|B|C|
+|||||--mixed|A|C|C|
+|||||--hard|C|C|C|
+|||||--merge|disallowed|||
+
+### tree-ish+path
+如果是tree-ish+paths结尾，是将tree-ish拷贝到index。
+**文件撤销add**：相当于unstage，撤销add。
+git reset file.txt
+git reset --mixed HEAD file.txt
+**仓库文件恢复到某个版本**
+git reset eb342fe file.txt + git commit 
+
+
+## checkout
+Switch **branches** or restore working tree files
+### branch
+更新工作目录与index或tree匹配，修改HEAD指向当前branch。
