@@ -16,6 +16,10 @@
 - **Tag**  
 对象名、对象类型，tag name， tagger等。
 
+## ref
+ref是一个名字，包含了一个commit。比如tag, branch_name
+指代tree中某个文件：tree-ish:path/to/file
+
 ### **可变对象**
 - **Index**
 全局单例对象，维护当前对应的文件列表及状态。
@@ -128,7 +132,7 @@ Detail descriptions.
 https://github.com/pysnow530/git-from-the-inside-out
 https://blog.csdn.net/yuzaipiaofei/article/details/6639866
 
-# Difference between **revert**, **reset**, **checkout**
+# Differences between **revert**, **reset**, **checkout**
 ## tree-ish commit-ish
 git可以在需要tree对象的时候给它一个commit或者tag对象，这时就使用commit或者tag所指向的tree对象。
 可以从tree-ish参数(commit, tag, tree)得到一个tree对象。
@@ -141,42 +145,103 @@ git log ^HEAD~2 HEAD
 比如查看从master分出来的test分支修改的内容
 git log ^master test
 
-## ref
-ref是一个名字，包含了一个commit。比如tag, branch_name
-指代tree中某个文件：tree-ish:path/to/file
-
 ## revert
 This command creates a new **commit** that undoes the changes from a previous **commit**. This command adds new history to the project (it doesn't modify existing history).
 
 ## reset
-Reset current **HEAD** to the specified state.可能会导致detached状态，因为会把branch移动到HEAD指向的地方。
-### commit-ish
-如果是commit结尾或无结尾(默认HEAD)，把当前HEAD指向commit，然后可以选的修改index和working directory。
+两个作用，修改index中path，将当前分支的HEAD指向commit，对应修改index和working directory。
+Reset current `HEAD` to the specified state.可能会导致detached状态，
+原来的`HEAD`在`ORIG_HEAD`里。
+### 参数为commit对象。
+如果是commit结尾或无结尾(默认`HEAD`)，把当前`HEAD`指向commit，然后可选的修改index和working directory。
 
 |working|index|HEAD|target|argument|working|index|HEAD|
-|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|A|B|C|D|--soft|A|B|D|
-|||||--mixed|A|D|D|
-|||||--hard|D|D|D|
-|||||--merge|disallowed|||
+|:--:|:--:|:--:|:--:|:--|:--:|:--:|:--:|
+|A|B|C|D|\--soft|A|B|D|
+|||||\--mixed|A|D|D|
+|||||\--hard|D|D|D|
+|||||\--merge|disallowed|||
+|||||\--keep|disallowed|||
 
 |working|index|HEAD|target|argument|working|index|HEAD|
-|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|A|B|C|C|--soft|A|B|C|
-|||||--mixed|A|C|C|
-|||||--hard|C|C|C|
-|||||--merge|disallowed|||
+|:--:|:--:|:--:|:--:|:--|:--:|:--:|:--:|
+|A|B|C|C|\--soft|A|B|C|
+|||||\--mixed|A|C|C|
+|||||\--hard|C|C|C|
+|||||\--merge|disallowed|||
+|||||\--keep|A|C|C|
 
-### tree-ish+path
-如果是tree-ish+paths结尾，是将tree-ish拷贝到index。
+|working|index|HEAD|target|argument|working|index|HEAD|
+|:--:|:--:|:--:|:--:|:--|:--:|:--:|:--:|
+|B|B|C|D|\--soft|B|B|D|
+|||||\--mixed|B|D|D|
+|||||\--hard|D|D|D|
+|||||\--merge|D|D|D|
+|||||\--keep|disallowed|||
+
+|working|index|HEAD|target|argument|working|index|HEAD|
+|:--:|:--:|:--:|:--:|:--|:--:|:--:|:--:|
+|B|B|C|C|\--soft|B|B|C|
+|||||\--mixed|B|C|C|
+|||||\--hard|C|C|C|
+|||||\--merge|C|C|C|
+|||||\--keep|B|C|C|
+
+|working|index|HEAD|target|argument|working|index|HEAD|
+|:--:|:--:|:--:|:--:|:--|:--:|:--:|:--:|
+|B|C|C|D|\--soft|B|C|D|
+|||||\--mixed|B|D|D|
+|||||\--hard|D|D|D|
+|||||\--merge|disallowed|||
+|||||\--keep|disallowed|||
+
+|working|index|HEAD|target|argument|working|index|HEAD|
+|:--:|:--:|:--:|:--:|:--|:--:|:--:|:--:|
+|B|C|C|C|\--soft|B|C|C|
+|||||\--mixed|B|C|C|
+|||||\--hard|C|C|C|
+|||||\--merge|B|C|C|
+|||||\--keep|B|C|C|
+
+### 参数为目录文件。
+`git reset path`与`git add path`对立。
+如果是tree-ish+paths结尾，**是将tree-ish拷贝到index**。不会修改`HEAD`。
 **文件撤销add**：相当于unstage，撤销add。
 git reset file.txt
 git reset --mixed HEAD file.txt
 **仓库文件恢复到某个版本**
 git reset eb342fe file.txt + git commit 
 
+### 例子
+#### 撤销add
+```
+edit a.c
+git add a.c
+// 准备pull其他文件。
+git reset
+git pull
+// 此时wd中a.c仍为修改过的版本。
+```
+#### 撤销commit并重做
+```
+git commit ...
+git reset --soft HEAD^
+edit
+git commit -a -c ORIG_HEAD
+```
+#### 撤销前几个commit新建一个branch
+```
+// 现在当前HEAD新建分支
+git branch newbranch
+// 把HEAD以及master分支移动到前3个commit
+git reset --hard HEAD~3
+// 切换到新分支
+git checkout newbranch
+```
 
 ## checkout
 Switch **branches** or restore working tree files
+### detached HEAD
+`HEAD`指向特定的commit，而不是一个命名的branch。当HEAD离开时，就回不来了。
 ### branch
 更新工作目录与index或tree匹配，修改HEAD指向当前branch。
