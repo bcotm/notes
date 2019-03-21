@@ -25,10 +25,18 @@ v
 | s ||
 | y |yank，复制|
 | p |put after cursor, above where the content should go|
+| gu | 转换为小写 guaw |
+| gU | 转换为大写 |
+| < | 增加缩进 |
+| > | 减小缩进 |
+| = | 自动缩进 |
+
+连续调用两次作用与整行。
 
 |Motion|说明|
 |:-:|:-|
 | w |直到下个单词第一个字符|
+| p | 段落 |
 | e |当前单词末尾|
 | b ||
 | $ ||
