@@ -123,6 +123,11 @@ Detail descriptions.
 - cherry-pick
     + 结合楼下可以恢复detach的commit，从一个分支挑选一个commit到当前分支
 - reflog
+    + git commit xxx 1-6个
+    + git reset --hard 1
+    + git commit xxx 7
+    + git reflog //找到6的commitid
+    + git cherry-pick 6 //awesome!
 - checkout
 - pull  fetch + merge
 - push
