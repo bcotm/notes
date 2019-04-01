@@ -110,6 +110,7 @@ Detail descriptions.
 ```
 
 # Commands
+
 - add
 - commit
 - log
@@ -120,6 +121,8 @@ Detail descriptions.
 - rebase
 - stash
 - cherry-pick
+    + 结合楼下可以恢复detach的commit，从一个分支挑选一个commit到当前分支
+- reflog
 - checkout
 - pull  fetch + merge
 - push
