@@ -129,10 +129,13 @@ Detail descriptions.
 - ls-tree
 - cat-file -t SHA-1
 
-https://github.com/pysnow530/git-from-the-inside-out
-https://blog.csdn.net/yuzaipiaofei/article/details/6639866
+https://github.com/pysnow530/git-from-the-inside-out  
+https://blog.csdn.net/yuzaipiaofei/article/details/6639866  
+http://ndpsoftware.com/git-cheatsheet.html  
+https://www.atlassian.com/git/tutorials/resetting-checking-out-and-reverting  
 
 # Differences between **revert**, **reset**, **checkout**
+用`reset`、`checkout`做private的改变，`revert`做public的改变。
 ## tree-ish commit-ish
 git可以在需要tree对象的时候给它一个commit或者tag对象，这时就使用commit或者tag所指向的tree对象。
 可以从tree-ish参数(commit, tag, tree)得到一个tree对象。
@@ -203,7 +206,7 @@ Reset current `HEAD` to the specified state.可能会导致detached状态，
 |||||\--merge|B|C|C|
 |||||\--keep|B|C|C|
 
-### 参数为目录文件。
+### 参数为目录文件。(Unstage a file)
 `git reset path`与`git add path`对立。
 如果是tree-ish+paths结尾，**是将tree-ish拷贝到index**。不会修改`HEAD`。
 **文件撤销add**：相当于unstage，撤销add。
@@ -238,9 +241,23 @@ git reset --hard HEAD~3
 // 切换到新分支
 git checkout newbranch
 ```
+#### 撤销pull或merge
+```
+git pull
+// 清空index 和 wd
+git reset --hard HEAD
+// =======================
+// 拉取topic分支做了ff合并，但是不想要这个topic
+git pull . topic/branch
+// 用合并时的原始分支修改index wd
+git reset --hard ORIG_HEAD
+```
 
 ## checkout
+**修改分支、恢复工作树文件。**(Discard changes in wd.)
 Switch **branches** or restore working tree files
+checkout 不修改分支ref，对历史没有任何修改。  
+没有`paths`就切换分支(移动`HEAD`)
 ### detached HEAD
 `HEAD`指向特定的commit，而不是一个命名的branch。当HEAD离开时，就回不来了。
 ### branch
