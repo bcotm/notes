@@ -1,4 +1,27 @@
 # Vim Basic
+本质就是对文本的修改与删除。
+Vim tutor
+## cursor
+
+## change   
+    operator [number] motion
+
+## find/substitude
+:s/old/new/g
+:#,#s/old/new/g
+:%s/old/new/g
+
+## command
+!ls
+
+## option
+set ic, is, hls
+~/.vimrc
+
+## help
+:help user-manual
+
+
 ## 模式
 - insert
 - normal
@@ -14,36 +37,37 @@ v
 ## 文本修改
 **操作符**+**重复次数**+**motion**
 **Operator**+**Number**+**Motion**
-**Number**+**Motion**
 
 |Operator| 说明 |
 |:-:|:-|
 | d |删除|
 | c |改变|
-| r ||
-| x ||
-| s ||
-| y |yank，复制|
-| p |put after cursor, above where the content should go|
+| y |复制, yank into registers|
+| ~ |改变大小写|
 | gu | 转换为小写 guaw |
 | gU | 转换为大写 |
+| p |put after cursor, above where the content should go|
 | < | 增加缩进 |
 | > | 减小缩进 |
 | = | 自动缩进 |
+| r |替换|
+| x |删除|
+| s ||
 
-连续调用两次作用与整行。
-
+// 作用范围, character,lines,blocks
 |Motion|说明|
 |:-:|:-|
 | w |直到下个单词第一个字符|
 | p | 段落 |
 | e |当前单词末尾|
 | b ||
-| $ ||
+| $ |行(尾)|
 | 0 ||
 | % |match ), ], }|
 | ^ |非空行首|
 | v ||
+|aw|a word|
+|as|a sentence|
 
 gg
 G
