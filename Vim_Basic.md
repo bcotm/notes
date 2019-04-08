@@ -25,8 +25,11 @@ set ic, is, hls
 ## 模式
 - insert
 - normal
+    + 普通模式下可以指定命令执行次数。
+    + 停顿时离开画笔。控制撤销粒度，构建一个可撤销块。
+    + 
 - visual
-- replace
+- command line
 
 i I
 a A
