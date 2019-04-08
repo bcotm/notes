@@ -82,6 +82,12 @@ v
 |o|A<CR>||
 |O|ko||
 
+## 回退
+u  
+f;,
+/nN
+
+
 gg
 G
 CTRL-i
