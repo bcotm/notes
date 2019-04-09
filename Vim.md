@@ -65,7 +65,50 @@ f+ //行内查找+号。
 s + <ESC> // 删除当前字符并进入insert模式，输入空格+空格。  
 ;. // 继续查找，重复操作。
 ```
-### 例子
+### 例子4
+**修改数字，可以通过加减**
+```javascript
+.bolg,.news{background-image:url(/sprite.png);}
+.bolg,{background-positoin:0px 0px;}
+```
+```javascript
+.bolg,.news{background-image:url(/sprite.png);}
+.bolg {background-positoin:0px 0px;}
+.news {background-positoin:180px 0px;}
+```
+### 方案
+```java
+yyp //复制新行
+jwcw news 
+180<c+a> //自动查找第一个数字并增加180
+```
+### 例子5
+**删除不只一个单词**
+```java
+Delete more than one word.
+```
+```java
+Delete one word.
+```
+### 方案
+```java
+w
+dw. //能够重复，就不要使用次数
+```
+### 例子6
+```java
+Delete more than one word.
+```
+```java
+Delete the word.
+```
+### 方案
+```java
+w
+c3w //需要修改的，用次数比较方便
+```
+
+
 让 **移动** 和 **修改** 能都够重复。
 **.范式：**一次按键移动，一次按键修改。
 插入模式下 ↑↓←→都会产生一个新的撤销快，也会对.命令产生影响。
