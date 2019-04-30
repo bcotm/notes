@@ -107,6 +107,34 @@ Delete the word.
 w
 c3w //需要修改的，用次数比较方便
 ```
+### 例子7
+**大写整个单词**
+```java
+java
+```
+```java
+JAVA
+```
+### 方案
+```java
+gUaw
+```
+### 例子8
+**把第一行的书名复制到第二行末尾**
+```java
+Practical Vim, by Drew Neil 
+Read Drew Neil's 
+```
+```java
+Practical Vim, by Drew Neil 
+Read Drew Neil's Practical Vim
+```
+### 方案
+```java
+yt,
+jA
+<c-r>0 复制寄存器0中的内容
+```
 
 
 让 **移动** 和 **修改** 能都够重复。
