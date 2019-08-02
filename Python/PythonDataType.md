@@ -49,5 +49,12 @@ r"\t"
 5. obj in seq
 
 支持切片运算
+
+list comprehensions
+
+[x**2 for x in seq if x > 0]
+
+output expression  sequence  conditions
+
 ## 元组
 ## 字典

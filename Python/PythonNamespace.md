@@ -10,3 +10,6 @@
 2. global：模块内函数、类、变量等，模块被import时创建，解释器退出时销毁。
 3. local：函数内变量等，函数调用时创建，函数返回时销毁。
 4. closure:闭包。
+
+
+https://segmentfault.com/a/1190000004519811
