@@ -1,7 +1,9 @@
 # Git
 ## Two simple ideas. Git Tracks contents not files. 
 - **Object database**. Git是一个对象数据库。
-- **Index file**. Index file是工作目录与数据库之间的缓存。
+- **Index file**. Index file是工作目录与数据库对象之间的映射，比如 data/letters.txt 2e65efe2……。
+
+所有git对象都存储在项目.git目录下，包括git配置和历史版本等。其他目录文件则为工作区。
 
 ## Git对象:
 **对象名称**是其哈希值(SHA-1)，可通过7/40位字母来索引。
@@ -27,12 +29,28 @@ ref是一个名字，包含了一个commit。比如tag, branch_name
 ## Git工作与对象
 ### git add
 创建blob对象。
+
+在index中创建目录对应索引。
+
+1. stage directory file_hash
+2. 0/1/2/3 data/letter.txt 63d8dbd40……(1,2,3代表合并冲突的基提交、目的提交和源提交)
+3. 冲突时需要重提git add清除掉index文件中的1,2,3。
+
 ### git commit
 1. 创建tree对象，从修改文件目录一直到根目录，没变动则为之前，变动则创建。
 2. 创建commit对象，指向工作区根目录的tree对象，并记录committer，author等。
+   1. 一个Tree对象指向一个工作区目录。
+   2. 权限 类型 文件哈希 文件名
+   3. 100644 blob 2e65efe2a…… letter.txt
 3. 将当前分支(`.git/HEAD`:`ref: refs/heads/master`)指向刚创建的commit对象。比如master分支的文件`.git/refs/heads/master`写入`74ac3ad..`
 
-Git中**ref**是一段提交历史的入口，用符号链接来操作历史，如`HEAD`、`MERGE_HEAD`、`FETCH_HEAD`、`fix-for-bug-376`。
+Git中**ref**是一段**提交历史**的入口，用符号链接来操作历史，如`HEAD`、`MERGE_HEAD`、`FETCH_HEAD`、`fix-for-bug-376`。
+
+`HEAD`最好直接指向ref，否则为`detached HEAD`状态，HEAD直接指向了提交对象，此后的提交没有分支ref跟进，容易丢失。
+
+![HEAD pointing at master and master pointing at the a1 commit](https://github.com/pysnow530/git-from-the-inside-out/raw/master/images/3-a1-refs.png)
+
+![a2 commit](https://github.com/pysnow530/git-from-the-inside-out/raw/master/images/7-a2.png)
 
 ### git checkout commit_hash
 1. 找到对应的commit对象。
@@ -75,7 +93,7 @@ Git中**ref**是一段提交历史的入口，用符号链接来操作历史，�
 ### git remote add remote_repo address
 1. 在当前仓库`.git/config`中添加
 > [remote "remote_rep"]  
->   url = address
+>       url = address
 
 ### git fetch remote_repo branch_name
 1. 获取remote_repo的branch_name的哈希值commit_hash。
@@ -83,6 +101,10 @@ Git中**ref**是一段提交历史的入口，用符号链接来操作历史，�
 3. 将`.git/refs/remotes/remote_repo/branch_name`的内容更新为commit_hash。
 4. `./git/FETCH_HEAD`内容设置为：
 > commit_hash branch 'branch_name' of remote_repo
+
+### git merge FETCH_HEAD
+
+合并远程分支到当前分支。
 
 ### git pull remote_repo branch_name
 git fetch + git merge
@@ -92,14 +114,14 @@ git fetch + git merge
 2. 添加source_repo为远程仓库`origin`，并pull。
 
 ### git push remote_repo branch_name
-不能是远程仓库当前的已检出分支。
+不能是远程仓库当前的**已检出分支**。
 
 ### 裸仓库
 ### git clone source_repo dest_repo --bare
 
+裸仓库没有已检出仓库，远程push时不会出错。
 
 
-  
 ### Comment
 ```java
 /*
@@ -268,5 +290,6 @@ checkout 不修改分支ref，对历史没有任何修改。
 没有`paths`就切换分支(移动`HEAD`)
 ### detached HEAD
 `HEAD`指向特定的commit，而不是一个命名的branch。当HEAD离开时，就回不来了。
+
 ### branch
 更新工作目录与index或tree匹配，修改HEAD指向当前branch。
