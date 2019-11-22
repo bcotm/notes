@@ -185,6 +185,7 @@ This command creates a new **commit** that undoes the changes from a previous **
 两个作用，修改index中path，将当前分支的HEAD指向commit，对应修改index和working directory。
 Reset current `HEAD` to the specified state.可能会导致detached状态，
 原来的`HEAD`在`ORIG_HEAD`里。
+
 ### 参数为commit对象。
 如果是commit结尾或无结尾(默认`HEAD`)，把当前`HEAD`指向commit，然后可选的修改index和working directory。
 
@@ -288,8 +289,28 @@ git reset --hard ORIG_HEAD
 Switch **branches** or restore working tree files
 checkout 不修改分支ref，对历史没有任何修改。  
 没有`paths`就切换分支(移动`HEAD`)
+
 ### detached HEAD
 `HEAD`指向特定的commit，而不是一个命名的branch。当HEAD离开时，就回不来了。
 
 ### branch
 更新工作目录与index或tree匹配，修改HEAD指向当前branch。
+
+
+
+
+
+### 对于文件参数
+
+`checkout`覆盖working directory
+
+`reset`覆盖index
+
+
+
+###  对于tree-sh
+
+`checkout`移动HEAD
+
+`reset`处理commit及ref
+
