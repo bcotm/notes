@@ -22,6 +22,7 @@ public class JavaDoc {
      * @author 作者
      * @param paramname 参数的注释
      * @return 返回值说明
+     * @throws nothing
      */
     public void whatMethod(String paramname){
 

@@ -32,3 +32,5 @@ public class AppleTest {
     }
 }
 ```
+
+默认访问权限为default，包内所有方法都可以访问。

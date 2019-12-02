@@ -7,6 +7,7 @@
 #### 封装(Encapsulation)
 将状态和行为(**fields**, **methods**)与对象绑定在一起。   
 并通过 **访问修饰符** 达到访问控制的目的。   
+
 * **default**: *package，同一包内均可访问。*   
 * **public**: *everything，任何地方均可访问。*   
 * **private**: *inside class(object)，仅在对象内可以访问。*   
@@ -20,9 +21,14 @@ Java只允许单继承，即一个类只能允许最多有一个父类。
 Java中可以通过 **接口(interface)** 实现多继承。   
 
 **继承类型**   
+
 1. 单继承 ： class DerivedClass extends BaseClass {}   
 2. 多继承 ： class SonClass implements FatherInterface {}   
 3. 多级继承 ： class GrandsonClass extends SonClass {}   
+
+**动态绑定**
+
+虚编译器不能准确知道调用方法，通过方法表确定，内联 。
 
 #### 多态(Polymorphism)
 performs a single action in different ways.     
@@ -37,7 +43,18 @@ performs a single action in different ways.
 作用于 **方法** 、 **类** 和 **接口** 上，没有实现，不能被实例化。   
 class partial abstract   
 interface full abstract   
-继承抽象类必须实现。   
+继承抽象类必须实现，否则类继续抽象。   
+
+```java
+abstract class AbstractClass{
+    public abstract String abstractMethod();
+    public String concreteMethod(){
+        // impl
+	}
+}
+```
+
+
 
 ### 构造器(Constructor)
 在 **创建对象实例** 时调用的方法，初始化对象。   
