@@ -43,3 +43,33 @@ public boolean equals(Object other){
 
 ### 在对象使用跟重复有关的集合类时，一定注意重载`equals()`和`hashCode()`方法。
 在集合中添加对象时，如果不重新定义hashCode，两个equals相同的不同对象会被当做两个对象。
+
+
+
+#### 对比对象不属于同一个类
+
+```java
+public boolean equals(Object otherObj){
+    // 第一种
+    if(getClass() != otherObj.getClass()){
+        return false;
+    }
+    // 第二种，所有子类有同样的语义
+    if(!(otherObj instanceof ClassName)){
+        return false;
+    }
+}
+```
+
+
+
+对象通过 + 号连接时，默认调用 toString()，一般为类名+属性值
+
+Arrays.toString(arr);Arrays.deepToString(twoDimArr);
+
+
+
+## 实现类克隆
+
+implements Cloneable
+
